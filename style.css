@@ -1,0 +1,76 @@
+/* ---------- THEME VARIABLES ---------- */
+:root {               /* light-mode defaults */
+  --bg: #ffffff;
+  --text: #212529;
+  --card-bg: #f8f9fa;
+
+  --nav-bg: #0d6efd;
+  --nav-link: #ffffff;
+
+  --hero-bg: #e9f5ff;
+  --link: #0d6efd;
+
+  --footer-bg: #f8f9fa;
+  --border: #dee2e6;
+}
+
+body.dark {           /* dark-mode overrides */
+  --bg: #212529;
+  --text: #e9ecef;
+  --card-bg: #343a40;
+
+  --nav-bg: #343a40;
+  --nav-link: #e9ecef;
+
+  --hero-bg: #1f2227;
+  --link: #66b2ff;
+
+  --footer-bg: #212529;
+  --border: #495057;
+}
+/* ---------- END VARIABLES ---------- */
+
+
+/* External CSS: shared across all pages */
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg);   /* NEW */
+  color: var(--text);            /* NEW */
+}
+
+nav {
+  background-color: var(--nav-bg);   /* NEW */
+}
+
+nav a {
+  color: var(--nav-link) !important; /* NEW */
+  margin-right: 15px;
+  text-decoration: none;
+}
+
+footer {
+  background-color: var(--footer-bg);    /* NEW */
+  text-align: center;
+  padding: 1rem 0;
+  font-size: 0.9rem;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  border-top: 1px solid var(--border);   /* NEW */
+}
+
+
+#hero {
+  background: var(--hero-bg);   /* NEW */
+  padding: 80px 0;
+  text-align: center;
+}
+
+
+.card-img-top {
+  height: 180px;
+  object-fit: cover;
+}
