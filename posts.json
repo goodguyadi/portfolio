@@ -1,0 +1,12 @@
+[
+  {
+    "title": "Setting up my Home Cyber-Security Lab",
+    "excerpt": "VirtualBox, Wireshark and Snort helped me practise basic defence.",
+    "content": "Full write-up coming soon! Today I installed VirtualBox..."
+  },
+  {
+    "title": "Why I switched to CSS variables",
+    "excerpt": "They power my new light/dark toggle.",
+    "content": "CSS custom properties let me redefine colours on the fly..."
+  }
+]
