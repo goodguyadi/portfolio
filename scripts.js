@@ -21,11 +21,26 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
 
         // when user clicks "Read more", reveal full content
-        card.querySelector('button').addEventListener('click', e => {
-          const btn = e.currentTarget;
-          btn.insertAdjacentHTML('afterend', `<p class="mt-3">${btn.dataset.full}</p>`);
-          btn.remove();
-        });
+       card.querySelector('button').addEventListener('click', (e) => {
+  const btn = e.currentTarget;
+  const cardBody = btn.parentElement;
+
+  // If full text is already showing, collapse it
+  const existing = cardBody.querySelector('.full-post');
+  if (existing) {
+    existing.remove();
+    btn.textContent = 'View more';
+    return;
+  }
+
+  // Otherwise, expand the post
+  const fullDiv = document.createElement('div');
+  fullDiv.className = 'full-post mt-3';
+  fullDiv.innerHTML = btn.dataset.full;   // HTML already stored in data-full
+  cardBody.appendChild(fullDiv);
+  btn.textContent = 'Show less';
+});
+
 
         blogList.appendChild(card);
       });

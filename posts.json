@@ -13,16 +13,17 @@
 }
 ,
   {
-  "title": "Switching Themes with CSS & JavaScript",
-  "date": "2025-08-05",
-  "excerpt": "A single toggle lets visitors choose light or dark mode.",
-  "content": "<h3>Overview</h3><p>I wanted one toggle that could change the entire colour scheme without duplicated CSS.</p><h3>1. CSS variables</h3><p>Light-mode variables live in <code>:root</code>, while dark-mode overrides are in <code>body.dark</code>.</p><h3>2. JavaScript</h3><p>The script toggles <code>.dark</code> on <code>&lt;body&gt;</code> </p><h3>3. Result</h3><p>The theme switch works on every page and persists between visits.</p>"
+  "title": "Inside the Light/Dark Theme Switcher",
+  "date": "2025-07-29",
+  "excerpt": "Design decisions, code snippets, accessibility and future ideas.",
+  "content": "<h2>1&nbsp;·&nbsp;Why a theme switcher?</h2><p>Many visitors prefer dark UIs, others want light. Instead of maintaining two full stylesheets I used <strong>CSS custom properties</strong> plus a tiny script.</p><h2>2&nbsp;·&nbsp;Key files</h2><pre><code>style.css      → declares --bg, --text, etc.\nheader.html    → contains &lt;button id=\"themeToggle\"&gt;\ntheme.js       → toggles .dark + saves choice</code></pre><h2>3&nbsp;·&nbsp;Core JavaScript</h2><pre><code>// theme.js (excerpt)\nconst saved   = localStorage.getItem('theme');\nconst prefers = window.matchMedia('(prefers-color-scheme: dark)').matches;\nconst dark    = saved === 'dark' || (!saved && prefers);\n\ndocument.body.classList.toggle('dark', dark);\n\ndocument.addEventListener('click', (e) =&gt; {\n  const btn = e.target.closest('#themeToggle');\n  if (!btn) return;\n  const isDark = document.body.classList.toggle('dark');\n  btn.textContent = isDark ? 'Light mode' : 'Dark mode';\n  localStorage.setItem('theme', isDark ? 'dark' : 'light');\n});</code></pre><h2>4&nbsp;·&nbsp;Gotchas &amp; fixes</h2><ul><li><strong>Navbar rebuild</strong> – Bootstrap replaces the toggle on resize. I solved this with event-delegation (<code>document.addEventListener('click', …)</code>).</li><li><strong>Header injection timing</strong> – the script waits for a custom <code>layoutReady</code> event fired by <code>inject-layout.js</code>.</li></ul><h2>5&nbsp;·&nbsp;Accessibility checks</h2><ol><li>Added <code>aria-pressed</code> attribute that flips with the theme.</li><li>Lighthouse score: <em>Contrast 90 / 100</em> in both themes.</li></ol><h2>6&nbsp;·&nbsp;Future roadmap</h2><ul><li>Auto-sync with system setting changes in real time (<code>matchMedia</code> listener).</li><li>Animated colour transition using <code>prefers-reduced-motion</code> fallback.</li></ul>"
 },
 {
-  "title": "Building a JSON-Powered Blog",
-  "date": "2025-08-05",
-  "excerpt": "How I load and display posts using fetch().",
-  "content": "<h3>Why use JSON?</h3><p>Hard-coding posts in HTML is messy. One JSON file keeps content separate from layout.</p><h3>1. posts.json</h3><p>Each post is an object with <code>title</code>, <code>date</code>, <code>excerpt</code> and <code>content</code>.</p><h3>2. scripts.js</h3><p>On page load, <code>fetch()</code> reads <code>posts.json</code>, then a small function builds Bootstrap cards and inserts them into <code>#blog-list</code>.</p><h3>3. Next steps</h3><p>Pagination and tags can be added by slicing the array or grouping by category.</p>"
+  "title": "Building a JSON-Powered Blog with Fetch",
+  "date": "2025-07-29",
+  "excerpt": "Separating content from layout using a single posts.json file.",
+  "content": "<h2>1&nbsp;·&nbsp;Project goals</h2><p>I wanted to add blog posts without editing HTML every time. The solution: <strong>one JSON file</strong> plus a 40-line script that turns each object into a Bootstrap card.</p><h2>2&nbsp;·&nbsp;Data structure</h2><pre><code>posts.json\n[\n  {\n    \"title\": \"...\",\n    \"date\":  \"YYYY-MM-DD\",\n    \"excerpt\": \"Short intro\",\n    \"content\": \"&lt;h2&gt;Full HTML...&lt;/h2&gt;\"\n  }\n]</code></pre><h2>3&nbsp;·&nbsp;Render pipeline</h2><pre><code>// scripts.js (excerpt)\nfetch('posts.json')\n  .then(r =&gt; r.json())\n  .then(posts =&gt; posts.forEach(buildCard))\n  .catch(err =&gt; showError(err));</code></pre><p><code>buildCard()</code> creates <code>&lt;div class=\"card\"&gt;</code> elements, injects them into <code>#blog-list</code> and wires a Read more / Show less toggle.</p><h2>4&nbsp;·&nbsp;Gotchas &amp; fixes</h2><ul><li><strong>CORS block on file:///</strong> – fetch fails if the page isn’t served over HTTP, so testing is done via VS Code Live Server.</li><li><strong>Markdown vs HTML</strong> – I ditched Markdown and store ready-made HTML to keep payload small and remove the extra parser.</li></ul><h2>5&nbsp;·&nbsp;Testing</h2><p>I used the browser Network panel to confirm a single GET for <code>posts.json</code> and Lighthouse to ensure no console errors.</p><h2>6&nbsp;·&nbsp;Future features</h2><ul><li>Client-side pagination for >10 posts.</li><li>Tag filter buttons (simple array <code>includes</code> check).</li><li>CI job that lints the JSON on every push.</li></ul>"
 }
+
 
 ]
