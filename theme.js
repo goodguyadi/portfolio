@@ -1,25 +1,32 @@
 /* ---------- LIGHT / DARK SWITCHER ---------- */
-(function () {
-  // 1. Apply saved or preferred theme
-  const saved = localStorage.getItem('theme'); // "light" | "dark" | null
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const useDark = saved === 'dark' || (!saved && prefersDark);
 
-  if (useDark) {
-    document.body.classList.add('dark');
-  }
+/* 1. helper to apply saved or preferred theme */
+function applyInitialTheme() {
+  const saved   = localStorage.getItem('theme');                   // "dark" | "light" | null
+  const prefers = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const dark    = saved === 'dark' || (!saved && prefers);
+  document.body.classList.toggle('dark', dark);
+  return dark;
+}
 
-  // 2. Find the toggle (may not exist on some pages yet)
+/* 2. setup the button once it exists */
+function initToggle() {
   const btn = document.getElementById('themeToggle');
-  if (!btn) return;            // nothing to set up, but theme is already applied
-
-  // 3. Set initial label
-  btn.textContent = useDark ? 'Light mode' : 'Dark mode';
-
-  // 4. Handle clicks
+  if (!btn) return;                         // still not present
+  btn.textContent = document.body.classList.contains('dark') ? 'Light mode' : 'Dark mode';
   btn.addEventListener('click', () => {
-    const darkNow = document.body.classList.toggle('dark');
-    btn.textContent = darkNow ? 'Light mode' : 'Dark mode';
-    localStorage.setItem('theme', darkNow ? 'dark' : 'light');
+    const isDark = document.body.classList.toggle('dark');
+    btn.textContent = isDark ? 'Light mode' : 'Dark mode';
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
   });
-})();
+}
+
+/* 3. run immediately for body class */
+applyInitialTheme();
+
+/* 4. if header already injected, init now; otherwise wait for the custom event */
+if (document.getElementById('themeToggle')) {
+  initToggle();
+} else {
+  document.addEventListener('layoutReady', initToggle, { once: true });
+}
