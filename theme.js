@@ -1,32 +1,30 @@
-/* ---------- LIGHT / DARK SWITCHER ---------- */
+/* ---------- LIGHT / DARK SWITCHER (final) ---------- */
 
-/* 1. helper to apply saved or preferred theme */
-function applyInitialTheme() {
-  const saved   = localStorage.getItem('theme');                   // "dark" | "light" | null
+/* 1. Set the initial body class once */
+(function () {
+  const saved   = localStorage.getItem('theme');                  // "dark" | "light" | null
   const prefers = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const dark    = saved === 'dark' || (!saved && prefers);
-  document.body.classList.toggle('dark', dark);
-  return dark;
-}
+  const startDark = saved === 'dark' || (!saved && prefers);
+  document.body.classList.toggle('dark', startDark);
+})();
 
-/* 2. setup the button once it exists */
+/* 2. Initialise the button when the header is injected */
+document.addEventListener('layoutReady', initToggle, { once: true });
+
 function initToggle() {
   const btn = document.getElementById('themeToggle');
-  if (!btn) return;                         // still not present
+  if (!btn) return;
+
+  // set correct label
   btn.textContent = document.body.classList.contains('dark') ? 'Light mode' : 'Dark mode';
-  btn.addEventListener('click', () => {
-    const isDark = document.body.classList.toggle('dark');
-    btn.textContent = isDark ? 'Light mode' : 'Dark mode';
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
-  });
-}
 
-/* 3. run immediately for body class */
-applyInitialTheme();
+  document.addEventListener('click', (e) => {
+  // is the thing we clicked (or one of its parents) the toggle?
+  const btn = e.target.closest('#themeToggle');
+  if (!btn) return;                    // click wasn’t on the toggle
 
-/* 4. if header already injected, init now; otherwise wait for the custom event */
-if (document.getElementById('themeToggle')) {
-  initToggle();
-} else {
-  document.addEventListener('layoutReady', initToggle, { once: true });
+  const darkNow = document.body.classList.toggle('dark');
+  btn.textContent = darkNow ? 'Light mode' : 'Dark mode';
+  localStorage.setItem('theme', darkNow ? 'dark' : 'light');
+});
 }
