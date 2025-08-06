@@ -1,12 +1,28 @@
 [
   {
-    "title": "Setting up my Home Cyber-Security Lab",
-    "excerpt": "VirtualBox, Wireshark and Snort helped me practise basic defence.",
-    "content": "Full write-up coming soon! Today I installed VirtualBox..."
-  },
+  "title": "Setting up my Home Cyber-Security Lab",
+  "date": "2025-06-10",
+  "excerpt": "VirtualBox, Wireshark and Snort helped me practise basic defence.",
+  "content": "<h3>Goal</h3><p>Create a safe, isolated lab where I can learn network-security tools without risking my main PC.</p><h3>1. Hardware</h3><ul><li>Old desktop with 16&nbsp;GB RAM &nbsp;•&nbsp; 500&nbsp;GB SSD</li><li>Cheap unmanaged switch for physical segmentation</li></ul><h3>2. Virtualisation</h3><p>I installed VirtualBox and spun up:</p><ul><li><strong>Kali Linux</strong> – attacker box</li><li><strong>Ubuntu Server</strong> – target VM (Apache + OpenSSH)</li><li><strong>pfSense</strong> – acts as an internal firewall/router</li></ul><h3>3. Monitoring tools</h3><p><strong>Wireshark</strong> for packet capture and <strong>Snort</strong> for IDS alerts. Both run in their own VM so logs stay separate from the targets.</p><h3>4. First exercise</h3><p>Scanned Ubuntu with <code>nmap -sV</code>, then wrote a Snort rule to alert on SSH brute-force attempts.</p><h3>5. Lessons learned</h3><ol><li>Snapshots are lifesavers when you mis-configure pfSense.</li><li>Virtual networks let you practise dangerous tools safely.</li><li>Logging everything makes post-exercise analysis much easier.</li></ol>"
+},
+{
+  "title": "Why I switched to CSS variables",
+  "date": "2025-07-25",
+  "excerpt": "They power my new light/dark toggle and simplify theming.",
+  "content": "<h3>Problem</h3><p>My old stylesheet hard-coded colours everywhere. Adding a dark mode meant duplicating rules with new hex values.</p><h3>Solution: CSS custom properties</h3><pre><code>:root {\n  --bg: #ffffff;\n  --text: #212529;\n}\nbody.dark {\n  --bg: #212529;\n  --text: #e9ecef;\n}</code></pre><p>Components now reference <code>var(--bg)</code> and <code>var(--text)</code>. Switching themes = toggling one class.</p><h3>Benefits</h3><ul><li><strong>Simplicity&nbsp;</strong>— only two colour definitions to maintain.</li><li><strong>Runtime updates&nbsp;</strong>— JavaScript can change a variable value without re-parsing the stylesheet.</li><li><strong>Themes as JSON&nbsp;</strong>— future idea: fetch a palette and update variables on the fly.</li></ul><h3>Takeaway</h3><p>Custom properties turned a messy colour overhaul into a 15-minute refactor and enabled the site-wide light/dark mode.</p>"
+}
+,
   {
-    "title": "Why I switched to CSS variables",
-    "excerpt": "They power my new light/dark toggle.",
-    "content": "CSS custom properties let me redefine colours on the fly..."
-  }
+  "title": "Switching Themes with CSS & JavaScript",
+  "date": "2025-08-05",
+  "excerpt": "A single toggle lets visitors choose light or dark mode.",
+  "content": "<h3>Overview</h3><p>I wanted one toggle that could change the entire colour scheme without duplicated CSS.</p><h3>1. CSS variables</h3><p>Light-mode variables live in <code>:root</code>, while dark-mode overrides are in <code>body.dark</code>.</p><h3>2. JavaScript</h3><p>The script toggles <code>.dark</code> on <code>&lt;body&gt;</code> </p><h3>3. Result</h3><p>The theme switch works on every page and persists between visits.</p>"
+},
+{
+  "title": "Building a JSON-Powered Blog",
+  "date": "2025-08-05",
+  "excerpt": "How I load and display posts using fetch().",
+  "content": "<h3>Why use JSON?</h3><p>Hard-coding posts in HTML is messy. One JSON file keeps content separate from layout.</p><h3>1. posts.json</h3><p>Each post is an object with <code>title</code>, <code>date</code>, <code>excerpt</code> and <code>content</code>.</p><h3>2. scripts.js</h3><p>On page load, <code>fetch()</code> reads <code>posts.json</code>, then a small function builds Bootstrap cards and inserts them into <code>#blog-list</code>.</p><h3>3. Next steps</h3><p>Pagination and tags can be added by slicing the array or grouping by category.</p>"
+}
+
 ]
